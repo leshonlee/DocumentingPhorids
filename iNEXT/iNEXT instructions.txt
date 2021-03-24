@@ -1,0 +1,94 @@
+#Install the following packages (only required once):
+install.packages("iNEXT")
+install.packages("ggplot2")
+install.packages("vegan")
+
+
+#Load the following packages (required each time you open R):
+library("iNEXT")
+library("ggplot2")
+library("vegan")
+
+
+#Load the following script, which requires full path
+source("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/ggiNEXT_nopd.R")
+
+
+#Loading community matrix for region species accumulation curve
+comm <- read.table("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/Regionmatrix_1.7_threshold0_01feb2021.txt", header=T)
+comm <- read.table("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/Regionmatrix_1.7_threshold0_WithSweden_01feb2021.txt", header=T)
+
+#Loading community matrix for timeperiod species accumulation curve
+comm <- read.table("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/Commmatrix_1.7_threshold0_OnlyTimeperiods_lesstrapsforSpringComparison.txt", header=T)
+comm <- read.table("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/Commmatrix_1.7_threshold0_OnlyTimeperiods.txt", header=T)
+
+
+comm_list <- as.list(as.data.frame(comm))
+
+
+#The iNEXT analyses, with different Hill numbers (q=0,1,2)
+#For the following analyses, you can change the endpoint (based off your x-axis)
+#For q=0:
+comm_h0 <- iNEXT(comm_list, q=0, datatype="abundance", se=TRUE, nboot=1000, endpoint=30000)
+ggiNEXT.nopd(comm_h0, type=1, se=TRUE, facet.var="none", color.var="site")+ggtitle("q=0 diversity vs individuals")
+ggiNEXT.nopd(comm_h0, type=2, se=TRUE, facet.var="none", color.var="site")+ggtitle("q=0 coverage vs individuals")
+ggiNEXT.nopd(comm_h0, type=3, se=TRUE, facet.var="none", color.var="site")+ggtitle("q=0 diversity vs coverage") 
+
+
+#to obtain rarefied species richness values and 95% confidence interval values (to get lower and upper CIs, replace qD with qD.LCL and qD.UCL)
+#For rarefied time period species richness
+approx(comm_h0$iNextEst$LateSpring$SC, comm_h0$iNextEst$LateSpring$qD, xout=0.970)
+approx(comm_h0$iNextEst$LateSpring$SC, comm_h0$iNextEst$LateSpring$qD.LCL, xout=0.970)
+approx(comm_h0$iNextEst$LateSpring$SC, comm_h0$iNextEst$LateSpring$qD.UCL, xout=0.970)
+
+approx(comm_h0$iNextEst$Midsummer$SC, comm_h0$iNextEst$Midsummer$qD, xout=0.970)
+approx(comm_h0$iNextEst$Midsummer$SC, comm_h0$iNextEst$Midsummer$qD.LCL, xout=0.970)
+approx(comm_h0$iNextEst$Midsummer$SC, comm_h0$iNextEst$Midsummer$qD.UCL, xout=0.970)
+
+approx(comm_h0$iNextEst$LateSummer$SC, comm_h0$iNextEst$LateSummer$qD, xout=0.970)
+approx(comm_h0$iNextEst$LateSummer$SC, comm_h0$iNextEst$LateSummer$qD.LCL, xout=0.970)
+approx(comm_h0$iNextEst$LateSummer$SC, comm_h0$iNextEst$LateSummer$qD.UCL, xout=0.970)
+
+approx(comm_h0$iNextEst$Offseason$SC, comm_h0$iNextEst$Offseason$qD, xout=0.970)
+approx(comm_h0$iNextEst$Offseason$SC, comm_h0$iNextEst$Offseason$qD.LCL, xout=0.970)
+approx(comm_h0$iNextEst$Offseason$SC, comm_h0$iNextEst$Offseason$qD.UCL, xout=0.970)
+
+#For rarefied region species richness
+approx(comm_h0$iNextEst$Region1$SC, comm_h0$iNextEst$Region1$qD, xout=0.946)
+approx(comm_h0$iNextEst$Region1$SC, comm_h0$iNextEst$Region1$qD.LCL, xout=0.946)
+approx(comm_h0$iNextEst$Region1$SC, comm_h0$iNextEst$Region1$qD.UCL, xout=0.946)
+
+approx(comm_h0$iNextEst$Region2$SC, comm_h0$iNextEst$Region2$qD, xout=0.946)
+approx(comm_h0$iNextEst$Region2$SC, comm_h0$iNextEst$Region2$qD.LCL, xout=0.946)
+approx(comm_h0$iNextEst$Region2$SC, comm_h0$iNextEst$Region2$qD.UCL, xout=0.946)
+
+approx(comm_h0$iNextEst$Region3$SC, comm_h0$iNextEst$Region3$qD, xout=0.946)
+approx(comm_h0$iNextEst$Region3$SC, comm_h0$iNextEst$Region3$qD.LCL, xout=0.946)
+approx(comm_h0$iNextEst$Region3$SC, comm_h0$iNextEst$Region3$qD.UCL, xout=0.946)
+
+approx(comm_h0$iNextEst$Region4$SC, comm_h0$iNextEst$Region4$qD, xout=0.946)
+approx(comm_h0$iNextEst$Region4$SC, comm_h0$iNextEst$Region4$qD.LCL, xout=0.946)
+approx(comm_h0$iNextEst$Region4$SC, comm_h0$iNextEst$Region4$qD.UCL, xout=0.946)
+
+approx(comm_h0$iNextEst$Region5$SC, comm_h0$iNextEst$Region5$qD, xout=0.946)
+approx(comm_h0$iNextEst$Region5$SC, comm_h0$iNextEst$Region5$qD.LCL, xout=0.946)
+approx(comm_h0$iNextEst$Region5$SC, comm_h0$iNextEst$Region5$qD.UCL, xout=0.946)
+
+approx(comm_h0$iNextEst$Region6$SC, comm_h0$iNextEst$Region6$qD, xout=0.946)
+approx(comm_h0$iNextEst$Region6$SC, comm_h0$iNextEst$Region6$qD.LCL, xout=0.946)
+approx(comm_h0$iNextEst$Region6$SC, comm_h0$iNextEst$Region6$qD.UCL, xout=0.946)
+
+approx(comm_h0$iNextEst$Region7$SC, comm_h0$iNextEst$Region7$qD, xout=0.946)
+approx(comm_h0$iNextEst$Region7$SC, comm_h0$iNextEst$Region7$qD.LCL, xout=0.946)
+approx(comm_h0$iNextEst$Region7$SC, comm_h0$iNextEst$Region7$qD.UCL, xout=0.946)
+
+approx(comm_h0$iNextEst$Region8$SC, comm_h0$iNextEst$Region8$qD, xout=0.946)
+approx(comm_h0$iNextEst$Region8$SC, comm_h0$iNextEst$Region8$qD.LCL, xout=0.946)
+approx(comm_h0$iNextEst$Region8$SC, comm_h0$iNextEst$Region8$qD.UCL, xout=0.946)
+
+approx(comm_h0$iNextEst$Fjallregion$SC, comm_h0$iNextEst$Fjallregion$qD, xout=0.946)
+approx(comm_h0$iNextEst$Fjallregion$SC, comm_h0$iNextEst$Fjallregion$qD.LCL, xout=0.946)
+approx(comm_h0$iNextEst$Fjallregion$SC, comm_h0$iNextEst$Fjallregion$qD.UCL, xout=0.946)
+
+
+

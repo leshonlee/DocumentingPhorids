@@ -1,0 +1,28 @@
+#Read community matrix
+comm <- read.table("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/latest_threshold100_PA.txt", header=T)
+
+#running NMDS
+nmds_comm_dist <- metaMDS(comm, distance="bray", k=2, trymax=100)
+
+#obtain NMDS1 and NMDS2 (axis) values
+nmds=ordiplot(nmds_comm_dist, type="p", display="sites")
+as.data.frame(scores(nmds))
+
+#create table with the obtained x and y axis values and the variables(temperature, precipitation, graden map)
+#Loading Abundance data
+data = read.table("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/regression_abundance.txt",header = TRUE)
+
+#Loading Presence Absence Data
+data = read.table("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/regression_PresenceAbsence.txt",header = TRUE)
+
+#Linear Model(for Garden map)
+reg=lm(NMDS1~factor(region, ordered=T), data=data)
+summary(reg)
+
+#Linear Model(for Temperature)
+regT=lm(NMDS1~factor(temp, ordered=T ), data=data)
+summary(regT)
+
+#Linear Model (for Precipitation)
+regP=lm(NMDS1~factor(prec, ordered=T), data=data)
+summary(regP)
