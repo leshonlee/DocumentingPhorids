@@ -1,0 +1,11 @@
+#install Betapart package 
+install.packages("betapart", repo = 'https://mac.R-project.org')
+
+library("vegan")
+library("betapart")
+
+#read table
+comm <- read.table("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/Final\ Script\ and\ matrices/NMDS/Distance\ Threshold\ Community\ Matrices/Abundance/Commmatrix_1.7_threshold100_01feb2021.txt", header=T)
+
+#to obtain abundance‐based dissimilarity values(balanced variation, gradient, and total)
+beta.pair.abund(comm, index.family="bray")
