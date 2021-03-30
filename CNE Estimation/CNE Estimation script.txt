@@ -1,0 +1,35 @@
+install.packages("reshape")
+install.packages("dplyr")
+
+library(reshape)
+library(dplyr)
+library(vegan)
+
+
+source("/Users/Leshon/Downloads/cneFxn.R") #load CNE function script
+
+phorids <- read.csv("/Users/Leshon/Desktop/FYP_Swedish\ Phorids\ Project/NMDS\ analysis/Final\ Script\ and\ matrices/NMDS/Distance\ Threshold\ Community\ Matrices/Abundance/Commmatrix_1.7_threshold100_01feb2021.txt",sep="\t") # Read in tab-delimited data
+
+melted_phorids <- melt(phorids, id="X") # Change structure to appropriate 3-column format
+
+names(melted_phorids) <- c("SciName","TrapID","Total") # Rename column names to correspond with cneFxn requirements
+
+df <- data.frame(melted_phorids) # Make into data frame
+
+df <- df %>% mutate_if(is.character,as.factor) # Change sciname into factor column; trapid is already a factor column
+
+dplyr::glimpse(df) # Double-check that they are indeed factors
+
+E <- df
+
+mytable <- xtabs( E$Total~E$SciName+E$TrapID )
+
+x <- specpool( t(mytable) ) # This is a vegan function
+chao2    <- x[["chao"]]
+chao2.se <- x[["chao.se"]]
+jack1    <- x[["jack1"]]
+jack1.se <- x[["jack1.se"]]
+jack2    <- x[["jack2"]]
+boot     <- x[["boot"]]
+boot.se  <- x[["boot.se"]]
+cne <- cneFxn( mytable )
